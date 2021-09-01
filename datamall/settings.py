@@ -28,7 +28,9 @@ SECRET_KEY = 'django-insecure-@2l22#2!6+g0t=7+5xykf2z$+dwq&hxm-&dl!^&5t-c=wz%rk$
 DEBUG = True
 
 # ip白名单
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '*'
+]
 
 
 # Application definition
@@ -40,18 +42,24 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'datum.apps.DatumConfig',
+    'corsheaders'
 ]
 
 # 中间件
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# 允许全部来源
+CORS_ORIGIN_ALLOW_ALL  = True
 
 ROOT_URLCONF = 'datamall.urls'
 
@@ -60,7 +68,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         # 配置模板路径
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -81,10 +89,30 @@ WSGI_APPLICATION = 'datamall.wsgi.application'
 # 数据库配置
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': None,
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+# 创建mongodb连接
+# from mongoengine import connect
+#
+# MONGO_CONN = connect(
+#     # 要连接的数据库名称
+#     db= 'datamall-db',
+#     # 定义一个默认数据库
+#     alias= 'datamall-db',
+#     # 主机
+#     host= '192.168.1.231',
+#     # 端口
+#     port= 27017,
+#     # 用户名
+#     username= 'root',
+#     # 密码
+#     password= 'twd@root$9921',
+#     # 需要进行验证的库名
+#     authentication_source="admin" # 进行身份认证的数据库，通常这个数据库为admin
+# )
 
 
 # Password validation
@@ -124,8 +152,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 # 静态文件路由
-STATIC_URL = '/static/'
-
+STATIC_URL = '/datamall_static/'
+# 静态文件具体位置
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'datum/datamall_static'),)
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
